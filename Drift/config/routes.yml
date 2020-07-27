@@ -1,0 +1,15 @@
+# Routes
+user_get:
+  path: /users/{id}
+  controller: App\Controllers\GetUserController
+  methods: [GET]
+
+user_update:
+  path: /users/{id}
+  controller: App\Controllers\UpdateUserController
+  methods: [PUT]
+
+user_delete:
+  path: /users/{id}
+  controller: App\Controllers\DeleteUserController
+  methods: [DELETE]

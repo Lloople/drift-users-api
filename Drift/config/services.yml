@@ -1,0 +1,41 @@
+parameters:
+    kernel.secret: yoursecretshouldbehere
+    app_path: "../.."
+
+framework:
+    form: false
+    assets: false
+    session: false
+    translator: false
+    php_errors:
+        log: false
+
+command_bus:
+    command_bus:
+        middlewares:
+            - Domain\Middlewares\CheckUserNameLengthMiddleware
+
+# config/services.yaml
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: true
+
+    App\Controllers\:
+        resource : "%app_path%/src/Controllers/*"
+        tags:
+            - {name: controller.service_arguments}
+
+    Domain\Queries\Handlers\:
+        resource : "%app_path%/src/Domain/Queries/Handlers/*"
+        tags:
+          - {name: "query_handler"}
+
+    Domain\Commands\Handlers\:
+        resource: "%app_path%/src/Domain/Commands/Handlers/*"
+        tags:
+          - {name: "command_handler"}
+
+    Domain\Middlewares\:
+        resource: "%app_path%/src/Domain/Middlewares/*"
