@@ -15,6 +15,16 @@ command_bus:
         middlewares:
             - Domain\Middlewares\CheckUserNameLengthMiddleware
 
+dbal:
+    connections:
+        drift_users_api:
+            driver: mysql
+            host: 127.0.0.1
+            port: 3306
+            user: root
+            password: ""
+            dbname: drift_users_api
+
 # config/services.yaml
 services:
     _defaults:
@@ -41,5 +51,7 @@ services:
         resource: "%app_path%/src/Domain/Middlewares/*"
 
     Domain\Repositories\InMemoryUserRepository:
+    Domain\Repositories\DBALUserRepository:
+
     Domain\Repositories\UserRepository:
-        alias: Domain\Repositories\InMemoryUserRepository
+        alias: Domain\Repositories\DBALUserRepository

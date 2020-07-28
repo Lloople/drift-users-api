@@ -31,4 +31,9 @@ class User
             'name' => $this->name
         ];
     }
+
+    public static function fromArray(array $array): self
+    {
+        return new self($array['id'], $array['name']);
+    }
 }

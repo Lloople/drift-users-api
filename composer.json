@@ -13,7 +13,10 @@
     "drift/http-kernel": "^0.1.3",
     "drift/server": "^0.1.2",
     "drift/react-functions": "^0.1",
-    "drift/command-bus-bundle": "*"
+    "drift/command-bus-bundle": "*",
+    "drift/dbal-bundle": "^0.1.2",
+    "clue/reactphp-sqlite": "^1.0",
+    "react/mysql": "^0.5.4"
   },
 
   "require-dev": {
