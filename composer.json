@@ -16,7 +16,9 @@
     "drift/command-bus-bundle": "*",
     "drift/dbal-bundle": "^0.1.2",
     "clue/reactphp-sqlite": "^1.0",
-    "react/mysql": "^0.5.4"
+    "react/mysql": "^0.5.4",
+    "drift/event-bus-bundle": "^0.1.8",
+    "drift/amqp-bundle": "^0.1.2"
   },
 
   "require-dev": {

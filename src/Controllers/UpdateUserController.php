@@ -31,7 +31,7 @@ class UpdateUserController
             )
 
             ->then( function () {
-                return new JsonResponse(null, 202);
+                return new JsonResponse(["message" => "User saved successfully"], 202);
 
             })->otherwise(function (Exception $e) {
 

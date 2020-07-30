@@ -33,8 +33,8 @@ class DBALUserRepository implements UserRepository
                 ->createQueryBuilder()
                 ->select('*')
                 ->from('users')
-                ->where('id = :id')
-                ->setParameter('id', $id)
+                ->where('id = ?')
+                ->setParameters([$id])
             )->then(function (Result $result) {
                 $result = $result->fetchFirstRow();
 
@@ -56,6 +56,21 @@ class DBALUserRepository implements UserRepository
                 }
 
                 return true;
+            });
+    }
+
+    public function all(): PromiseInterface
+    {
+        return $this->connection->query(
+                $this->connection->createQueryBuilder()->select('*')->from('users')
+            )->then(function (Result $result) {
+                $users = [];
+                
+                foreach ($result->fetchAllRows() as $user) {
+                    $users[$user['id']] = User::fromArray($user);
+                }
+
+                return $users;
             });
     }
 }

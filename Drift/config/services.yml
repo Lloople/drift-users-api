@@ -25,6 +25,17 @@ dbal:
             password: ""
             dbname: drift_users_api
 
+event_bus:
+    exchanges:
+        default: events_amqp
+    router:
+        _all: default
+    async_pass_through: false
+    async_adapter:
+        adapter: amqp
+        amqp:
+            host: localhost
+
 # config/services.yaml
 services:
     _defaults:
@@ -52,6 +63,7 @@ services:
 
     Domain\Repositories\InMemoryUserRepository:
     Domain\Repositories\DBALUserRepository:
+    Domain\Repositories\ComposedUserRepository:
 
     Domain\Repositories\UserRepository:
-        alias: Domain\Repositories\DBALUserRepository
+        alias: Domain\Repositories\ComposedUserRepository
