@@ -41,4 +41,9 @@ class InMemoryUserRepository implements UserRepository
 
         return reject(new UserNotFoundException());
     }
+
+    public function all(): PromiseInterface
+    {
+        return resolve($this->users);
+    }
 }

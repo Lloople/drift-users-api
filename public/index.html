@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>David Llop</title>
+        <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
+        <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    </head>
+    <body>
+        <div class="mt-20" id="app">
+            <div class="flex">
+                <div class="flex-1 p-4">
+                    <h1>CURRENT DATABASE STATUS</h1>
+                    <div class="flex flex-col" id="database">
+                        <div class="-my-2 py-2 overflow-x-auto sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
+                            <div class="align-middle inline-block min-w-full shadow overflow-hidden sm:rounded-lg border-b border-gray-200">
+                            <table class="min-w-full divide-y divide-gray-200">
+                                <thead>
+                                <tr>
+                                    <th class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                                    Key
+                                    </th>
+                                    <th class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                                    Value
+                                    </th>
+                                </tr>
+                                </thead>
+                                <tbody class="bg-white divide-y divide-gray-200">
+                                <tr v-for="row in database">
+                                    <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+                                    <div class="flex items-center" v-text="row.key"></div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-no-wrap text-left border-b border-gray-200 text-sm leading-5 font-medium" v-text="row.name"></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            </div>
+                        </div>
+                        </div>
+                        
+                </div>
+                <div class="flex-1 p-4">
+                    <h1>EVENTS LOG</h1>
+                    <div class="flex flex-col" id="log" x-data="logs()">
+                        <div class="-my-2 py-2 overflow-x-auto sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
+                            <div class="align-middle inline-block min-w-full shadow overflow-hidden sm:rounded-lg border-b border-gray-200">
+                            <table class="min-w-full divide-y divide-gray-200">
+                                <thead>
+                                <tr>
+                                    <th class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                                    Type
+                                    </th>
+                                    <th class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                                    Payload
+                                    </th>
+                                </tr>
+                                </thead>
+                                <tbody class="bg-white divide-y divide-gray-200">
+                                        <tr v-for="log in logs">
+                                            <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+                                            <div class="flex items-center" v-text="log.type"></div>
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-no-wrap text-left border-b border-gray-200 text-sm leading-5 font-medium"><code v-text="log.data"></code></td>
+                                        </tr>
+                                </tbody>
+                            </table>
+                            </div>
+                        </div>
+                        </div>
+                </div>
+            </div>
+        </div>
+        <script>
+            var app = new Vue({
+                el: '#app',
+                data: {
+                    logs: [],
+                    database: []
+                },
+                mounted: function () {
+                    let conn = new WebSocket('ws://0.0.0.0:1234/events');
+                    conn.onmessage = (event) => this.refresh(JSON.parse(event.data))
+                },
+                methods: {
+                    refresh: function (data) {
+                        this.logs.push(data)
+
+                        if (data.type === 'user_saved') {
+                            // TODO: This doesn't work, database is always empty no matter what 🤔
+                            console.log(data)
+                            this.database = data.database
+                        }
+                    }
+                }
+                
+            })
+            
+        </script>
+    </body>
+</html>

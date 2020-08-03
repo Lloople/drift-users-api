@@ -12,4 +12,6 @@ interface UserRepository
     public function find(int $id): PromiseInterface;
 
     public function delete(User $user): PromiseInterface;
+
+    public function all(): PromiseInterface;
 }

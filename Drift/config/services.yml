@@ -36,6 +36,11 @@ event_bus:
         amqp:
             host: localhost
 
+websocket:
+    routes:
+        events:
+            path: /events
+
 # config/services.yaml
 services:
     _defaults:
@@ -60,6 +65,9 @@ services:
 
     Domain\Middlewares\:
         resource: "%app_path%/src/Domain/Middlewares/*"
+
+    Domain\EventSubscribers\:
+        resource: "%app_path%/src/Domain/EventSubscribers/*"
 
     Domain\Repositories\InMemoryUserRepository:
     Domain\Repositories\DBALUserRepository:

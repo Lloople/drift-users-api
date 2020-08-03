@@ -36,6 +36,11 @@ class ComposedUserRepository implements UserRepository, EventSubscriberInterface
         return $this->dbal->delete($user);
     }
 
+    public function all(): PromiseInterface
+    {
+        return $this->dbal->all();
+    }
+
     public function cache()
     {
         $this->dbal->all()->then(function($users) {
