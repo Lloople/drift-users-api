@@ -4,7 +4,6 @@ namespace Domain\EventSubscribers;
 
 use Domain\Events\UserSaved;
 use Domain\Events\UserDeleted;
-use Domain\Repositories\ComposedUserRepository;
 use Drift\HttpKernel\Event\DomainEventEnvelope;
 use Drift\Websocket\Connection\Connections;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -14,12 +13,9 @@ class BroadcastDomainEvents implements EventSubscriberInterface
 
     private $connections;
 
-    private $userRepository;
-
-    public function __construct(Connections $eventsConnections, ComposedUserRepository $userRepository)
+    public function __construct(Connections $eventsConnections)
     {
         $this->connections = $eventsConnections;
-        $this->userRepository = $userRepository;
     }
 
     public function broadcastUserSaved(DomainEventEnvelope $eventEnvelope)
@@ -30,7 +26,6 @@ class BroadcastDomainEvents implements EventSubscriberInterface
             'type' => 'user_saved',
             'data' => [
                 'user' => $userSavedEvent->getUser()->toArray(),
-                'database' => $this->userRepository->all()
             ]
         ]));
     }
@@ -43,7 +38,6 @@ class BroadcastDomainEvents implements EventSubscriberInterface
             'type' => 'user_deleted',
             'data' => [
                 'user' => $userDeletedEvent->getUser()->toArray(),
-                'database' => $this->userRepository->all()
             ]
         ]));
     }
