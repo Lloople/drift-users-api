@@ -15,7 +15,7 @@ class InMemoryUserRepository implements UserRepository
 
     public function __construct(array $users = [])
     {
-        $this->users = $users;
+        $this->reload($users);
     }
 
     public function save(User $user): PromiseInterface
@@ -45,5 +45,10 @@ class InMemoryUserRepository implements UserRepository
     public function all(): PromiseInterface
     {
         return resolve($this->users);
+    }
+
+    public function reload(array $users): void
+    {
+        $this->users = $users;
     }
 }

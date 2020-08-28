@@ -38,13 +38,13 @@ class ComposedUserRepository implements UserRepository, EventSubscriberInterface
 
     public function all(): PromiseInterface
     {
-        return $this->dbal->all();
+        return $this->dbal->all(); // This should be `$this->memory->all()` but it doesn't work
     }
 
     public function cache()
     {
         $this->dbal->all()->then(function($users) {
-            $this->memory = new InMemoryUserRepository($users); 
+            $this->memory->reload($users);
         });
     }
 
@@ -58,7 +58,7 @@ class ComposedUserRepository implements UserRepository, EventSubscriberInterface
                 ['cache', 0]
             ],
             AsyncKernelEvents::PRELOAD => [
-                'cache', 0
+                ['cache', 0]
             ]
         ];
     }
